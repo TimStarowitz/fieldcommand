@@ -1,23 +1,31 @@
+import { useEffect, useRef }from "react"
+import mapboxgl from "mapbox-gl"
+
+mapboxgl.accessToken = import.meta.env.VITE_MAPBOX_TOKEN
+
 function MapPanel() {
+    const mapContainer = useRef(null)
+
+    useEffect(() => {
+        const map = new mapboxgl.Map({
+            container: mapContainer.current,
+            style: "mapbox://styles/mapbox/satellite-streets-v12",
+            center: [-93.6001, 41.5868],
+            zoom: 9,    
+        })
+        
+        return () => map.remove()
+    }, [])
+    
     return (
         <section
+            ref={mapContainer}
             style={{
-                flex: 1,
-                height: "100%",
-                width: "100%",
-                backgroundColor: "#d9d9d9",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "18px",
-                color: "#444",
+                flex: 1
             }}
-            >
-            Map workspace loading...
-
-        </section>
+        />
     )
-
+    
 }
 
 export default MapPanel
